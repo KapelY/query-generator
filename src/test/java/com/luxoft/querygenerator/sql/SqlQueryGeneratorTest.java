@@ -37,7 +37,7 @@ class SqlQueryGeneratorTest {
 
     @Test
     void insert() {
-        String expected = "INSERT INTO persons(id, person_name, salary) VALUES (1, 'Vlad', 1.8);";
+        String expected = "INSERT INTO persons(id, person_name, salary) VALUES (1, Vlad, 1.8);";
 
         Person person = new Person(1, "Vlad", 1.8);
 
@@ -55,9 +55,11 @@ class SqlQueryGeneratorTest {
 
     @Test
     void update() {
-        String expected = "UPDATE persons SET salary WHERE id=3;";
+        String expected = "UPDATE persons SET person_name=yura, salary=100.77 WHERE id=3;";
 
-        String actual = sqlQueryGenerator.update(Person.class, 2);
+        Person person = new Person(3, "yura", 100.77);
+
+        String actual = sqlQueryGenerator.update(Person.class,  person);
         assertEquals(expected, actual);
     }
 }
