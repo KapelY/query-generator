@@ -2,7 +2,7 @@ package com.luxoft.querygenerator.api;
 
 public interface QueryGenerator {
 
-    String findAll(Class<?> clazz);
+    String findAll();
 
     String findById(Object id);
 
