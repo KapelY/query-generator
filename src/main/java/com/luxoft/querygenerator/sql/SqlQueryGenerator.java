@@ -8,17 +8,12 @@ import java.lang.reflect.Field;
 import java.util.StringJoiner;
 
 public class SqlQueryGenerator implements QueryGenerator {
-    private Class clazz;
-
-    public SqlQueryGenerator(Class clazz) {
-        this.clazz = clazz;
-    }
 
     @Override
-    public String findAll() {
+    public String findAll(Class<?> clazz) {
         checkEntityAnnotationPresent(clazz);
         StringBuilder query = new StringBuilder("SELECT ");
-        Entity clazzAnnotation = (Entity) clazz.getAnnotation(Entity.class);
+        Entity clazzAnnotation = clazz.getAnnotation(Entity.class);
         String tableName = clazzAnnotation.table().isEmpty() ? clazz.getName() : clazzAnnotation.table();
 
         StringJoiner columnNames = new StringJoiner(", ");
@@ -41,30 +36,32 @@ public class SqlQueryGenerator implements QueryGenerator {
         return query.toString();
     }
 
+    @Override
+    public String findById(Class<?> clazz, Object id) {
+        StringBuilder query = new StringBuilder(findAll(clazz));
+        query.replace(query.length() - 1, query.length(), " ");
+        query.append("WHERE id=").append(id).append(";");
+        return query.toString();
+    }
+
+    @Override
+    public String insert(Class<?> clazz, Object value) {
+        return null;
+    }
+
+    @Override
+    public String remove(Class<?> clazz, Object id) {
+        return null;
+    }
+
+    @Override
+    public String update(Class<?> clazz, Object value) {
+        return null;
+    }
+
     private void checkEntityAnnotationPresent(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(Entity.class)) {
             throw new IllegalArgumentException("Annotation @Entity should be present");
         }
-    }
-
-    @Override
-    public String findById(Object id) {
-        findAll();
-        return null;
-    }
-
-    @Override
-    public String insert(Object value) {
-        return null;
-    }
-
-    @Override
-    public String remove(Object id) {
-        return null;
-    }
-
-    @Override
-    public String update(Object value) {
-        return null;
     }
 }
