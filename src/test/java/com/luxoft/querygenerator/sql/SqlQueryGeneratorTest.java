@@ -31,17 +31,17 @@ class SqlQueryGeneratorTest {
         String actual = sqlQueryGenerator.findById(Person.class, 1);
         assertEquals(expected, actual);
 
-        String actual2 = sqlQueryGenerator.findById(Person.class, 1l);
+        String actual2 = sqlQueryGenerator.findById(Person.class, 1L);
         assertEquals(expected, actual2);
     }
 
     @Test
-    void insert() {
-        String expected = "INSERT INTO persons(id, person_name, salary) VALUES (1, 'Vlad', 1.8);";
+    void insert() throws IllegalAccessException {
+        String expected = "INSERT INTO persons(id, person_name, salary) VALUES(1, 'Vlad', 1.8);";
 
         Person person = new Person(1, "Vlad", 1.8);
 
-        String actual = sqlQueryGenerator.insert(Person.class, person);
+        String actual = sqlQueryGenerator.insert(person);
         assertEquals(expected, actual);
     }
 
@@ -54,7 +54,7 @@ class SqlQueryGeneratorTest {
     }
 
     @Test
-    void update() {
+    void update() throws IllegalAccessException {
         String expected = "UPDATE persons SET person_name='yura', salary=100.77 WHERE id=3;";
 
         Person person = new Person(3, "yura", 100.77);

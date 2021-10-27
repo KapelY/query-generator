@@ -6,9 +6,9 @@ public interface QueryGenerator {
 
     String findById(Class<?> clazz, Object id);
 
-    <T> String insert(Class<T> clazz, T value);
+    String insert(Object value) throws IllegalAccessException;
 
     String remove(Class<?> clazz, Object id);
 
-    <T> String update(Class<T> clazz, T value);
+    String update(Class<?> clazz, Object value) throws IllegalAccessException;
 }
